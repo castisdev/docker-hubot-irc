@@ -15,8 +15,6 @@ RUN cd /root && \
 # Set environment variables
 ENV TZ Asia/Seoul
 ENV HUBOT_IRC_NICK hubot
-ENV HUBOT_IRC_NICKSERV_PASSWORD castisdev.I7Wuv1gPUUhwvqw8NdJ8
-ENV HUBOT_IRC_PASSWORD castisdev.I7Wuv1gPUUhwvqw8NdJ8
 ENV HUBOT_IRC_PORT 6667
 ENV HUBOT_IRC_ROOMS #general,#random,#sandbox,#d7
 ENV HUBOT_IRC_SERVER castisdev.irc.slack.com

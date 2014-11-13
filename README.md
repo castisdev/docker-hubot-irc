@@ -17,11 +17,11 @@ $ sudo docker pull castis/hubot-irc
 #### Run
 
 ```
-$ sudo docker run -it --rm -p 9009:9009 -e HUBOT_JENKINS_AUTH=yourid:pass castis/hubot-irc
+$ sudo docker run -it --rm -p 9009:9009 castis/hubot-irc
 ```
 
-#### Run as a daemon
+#### Run as a daemon with env variables
 
 ```
-$ sudo docker run -d -p 9009:9009 -e HUBOT_JENKINS_AUTH=yourid:pass castis/hubot-irc
+$ sudo docker run -d -p 9009:9009 -e HUBOT_JENKINS_AUTH=yourid:password -e HUBOT_IRC_PASSWORD=password castis/hubot-irc
 ```
