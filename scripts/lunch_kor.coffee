@@ -19,6 +19,21 @@
 
 module.exports = (robot) ->
   restaurants =  () -> robot.brain.data.restaurants ?= {}
+  names = () -> (name for name, like of restaurants())
+  pick_random = (list) -> list[Math.floor(Math.random() * list.length)]
+
+  send_lunch_msg = () ->
+    robot.messageRoom('#dev7', "@channel: 밥? 오늘은 #{pick_random(names())}?")
+
+  timer = setInterval ->
+    date = new Date()
+    if date.getHours() == 12 and date.getMinutes() == 0
+      send_lunch_msg()
+      clearInterval timer
+      daily_timer = setInterval ->
+        send_lunch_msg()
+      , 24 * 60 * 60 * 1000
+  , 60 * 1000
 
   robot.respond /식당$/, (msg) ->
     names = (name for name, like of restaurants())
@@ -50,6 +65,4 @@ module.exports = (robot) ->
     msg.send "[#{name}] 목록에서 제거되었습니다."
 
   robot.respond /뭐\s*먹/, (msg) ->
-    names = (name for name, like of restaurants())
-    name = names[Math.floor(Math.random() * names.length)]
-    msg.send "#{name}?"
+    msg.send "#{pick_random(names())}?"
