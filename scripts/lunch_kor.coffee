@@ -16,24 +16,17 @@
 # Author:
 #   mnpk <mnncat@gmail.com>
 
+cronjob = require('cron').CronJob
 
 module.exports = (robot) ->
   restaurants =  () -> robot.brain.data.restaurants ?= {}
-  names = () -> (name for name, like of restaurants())
-  pick_random = (list) -> list[Math.floor(Math.random() * list.length)]
+  random_restaurant = () ->
+    names = (name for name, like of restaurants())
+    names[Math.floor(Math.random() * names.length)]
 
-  send_lunch_msg = () ->
-    robot.messageRoom('#dev7', "@channel: 밥? 오늘은 #{pick_random(names())}?")
-
-  timer = setInterval ->
-    date = new Date()
-    if date.getHours() == 12 and date.getMinutes() == 0
-      send_lunch_msg()
-      clearInterval timer
-      daily_timer = setInterval ->
-        send_lunch_msg()
-      , 24 * 60 * 60 * 1000
-  , 60 * 1000
+  new cronjob('0 12 * * 1-5', =>
+    robot.messageRoom('#dev7', "@channel: 식사시간. 오늘은 #{random_restaurant()}?")
+  , null, true)
 
   robot.respond /식당$/, (msg) ->
     names = (name for name, like of restaurants())
@@ -45,7 +38,7 @@ module.exports = (robot) ->
   robot.respond /식당\s+(.+)$/i, (msg) ->
     name = msg.match[1]
     like = restaurants()[name]
-    if like 
+    if like
       msg.send "[#{name}] 좋아요 :heart: #{like}개"
     else
       msg.send "처음 듣는 식당입니다."
@@ -65,4 +58,4 @@ module.exports = (robot) ->
     msg.send "[#{name}] 목록에서 제거되었습니다."
 
   robot.respond /뭐\s*먹/, (msg) ->
-    msg.send "#{pick_random(names())}?"
+    msg.send "#{random_restaurant()}?"
