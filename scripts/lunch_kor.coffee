@@ -16,17 +16,11 @@
 # Author:
 #   mnpk <mnncat@gmail.com>
 
-cronjob = require('cron').CronJob
-
 module.exports = (robot) ->
   restaurants =  () -> robot.brain.data.restaurants ?= {}
   random_restaurant = () ->
     names = (name for name, like of restaurants())
     names[Math.floor(Math.random() * names.length)]
-
-  new cronjob('0 12 * * 1-5', =>
-    robot.messageRoom('#dev7', "@channel: 식사시간. 오늘은 #{random_restaurant()}?")
-  , null, true)
 
   robot.respond /식당$/, (msg) ->
     names = (name for name, like of restaurants())
