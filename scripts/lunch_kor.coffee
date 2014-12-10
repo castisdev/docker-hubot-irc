@@ -51,5 +51,5 @@ module.exports = (robot) ->
     delete restaurants()[name]
     msg.send "[#{name}] 목록에서 제거되었습니다."
 
-  robot.respond /뭐\s*먹/, (msg) ->
+  robot.hear /뭐\s*먹/, (msg) ->
     msg.send "#{random_restaurant()}?"
