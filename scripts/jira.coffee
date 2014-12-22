@@ -95,7 +95,7 @@ module.exports = (robot) ->
 
   useV2 = process.env.HUBOT_JIRA_USE_V2 != "false"
   # max number of issues to list during a search
-  maxlist = process.env.HUBOT_JIRA_MAXLIST || 10
+  maxlist = process.env.HUBOT_JIRA_MAXLIST || 20
   # how long (seconds) to wait between repeating the same JIRA issue link
   issuedelay = process.env.HUBOT_JIRA_ISSUEDELAY || 30
   # array of users that are ignored
@@ -160,6 +160,24 @@ module.exports = (robot) ->
 
       cb "[#{issue.key}] #{issue.summary} / #{issue.assignee()} / #{issue.status} (#{issue.url})"
       
+  summary = (issue) ->
+    get msg, "issue/#{issue}", (issues) ->
+      if issues.errors?
+        return
+
+      if useV2
+        issue =
+          key: issues.key
+          summary: issues.fields.summary
+          status: issues.fields.status.name
+      else
+        issue =
+          key: issues.key
+          summary: issues.fields.summary.value
+          status: issues.fields.status.value.name
+
+      return "[#{issue.key}] #{issue.summary} : #{issue.status}"
+
   search = (msg, jql, cb) ->
     get msg, "search/?jql=#{escape(jql)}", (result) ->
       if result.errors?
@@ -262,3 +280,13 @@ module.exports = (robot) ->
       filter = filters.get msg.match[3]
       msg.reply "#{filter.name}: #{filter.jql}"
 
+  robot.hear /업무보고/, (msg) ->
+    jql = "updated >= -1d AND assignee in (#{msg.message.user.name})"
+    get msg, "search/?jql=#{escape(jql)}", (result) ->
+      if result.errors?
+        return
+      text = ''
+      for issue in result.issues
+        issue_summary = "[#{issue.key}] #{issue.fields.summary} : #{issue.fields.status.name}\n"
+        text = text + issue_summary
+      msg.reply text
