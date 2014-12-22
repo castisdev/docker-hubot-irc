@@ -39,6 +39,6 @@ module.exports = (robot) ->
         morning = msg.random mornings
         msg.send morning.replace "%", msg.message.user.name
 
-    robot.hear /퇴근|업무 종료/, (msg) ->
+    robot.hear /퇴근|업무\s*종료/, (msg) ->
         bye = msg.random byes
         msg.send bye.replace "%", msg.message.user.name
