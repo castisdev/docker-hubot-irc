@@ -160,24 +160,6 @@ module.exports = (robot) ->
 
       cb "[#{issue.key}] #{issue.summary} / #{issue.assignee()} / #{issue.status} (#{issue.url})"
       
-  summary = (issue) ->
-    get msg, "issue/#{issue}", (issues) ->
-      if issues.errors?
-        return
-
-      if useV2
-        issue =
-          key: issues.key
-          summary: issues.fields.summary
-          status: issues.fields.status.name
-      else
-        issue =
-          key: issues.key
-          summary: issues.fields.summary.value
-          status: issues.fields.status.value.name
-
-      return "[#{issue.key}] #{issue.summary} : #{issue.status}"
-
   search = (msg, jql, cb) ->
     get msg, "search/?jql=#{escape(jql)}", (result) ->
       if result.errors?
@@ -279,16 +261,3 @@ module.exports = (robot) ->
     else
       filter = filters.get msg.match[3]
       msg.reply "#{filter.name}: #{filter.jql}"
-
-  robot.hear /업무\s*보고/, (msg) ->
-    jql = "updated >= -1d AND assignee in (#{msg.message.user.name})"
-    get msg, "search/?jql=#{escape(jql)}", (result) ->
-      if result.errors?
-        return
-      if result.total == 0
-        return
-      text = '#{msg.message.user.name}님이 오늘 진행하신 이슈입니다.'
-      for issue in result.issues
-        issue_summary = "[#{issue.key}] #{issue.fields.summary} : #{issue.fields.status.name}\n"
-        text = text + issue_summary
-      msg.send text
