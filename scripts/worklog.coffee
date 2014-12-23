@@ -8,6 +8,8 @@
 #   HUBOT_JIRA_URL
 #   HUBOT_JIRA_USER
 #   HUBOT_JIRA_PASSWORD
+#   HUBOT_EMAIL_USER
+#   HUBOT_EMAIL_PASSWORD
 #
 # Commands:
 #   업무보고 - 오늘 당신이 한 일을 요약해서 이메일로 보내드립니다.
@@ -31,8 +33,8 @@ module.exports = (robot) ->
   send_worklog_email = (from, title, body) ->
     email = require("emailjs/email")
     server = email.server.connect({
-       user: "mwpark@castis.com",
-       password: "***REMOVED***",
+       user: process.env.HUBOT_EMAIL_USER,
+       password: process.env.HUBOT_EMAIL_PASSWORD,
        host: "mail.castis.com",
        ssl: false
     });
