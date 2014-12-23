@@ -51,7 +51,8 @@ module.exports = (robot) ->
         return
       if result.total == 0
         return
-      msg.send "#{msg.message.user.name}님이 오늘 진행하신 이슈입니다."
+      summary = "#{msg.message.user.name}님이 오늘 진행하신 이슈입니다.\n"
+      msg.send summary
       text = ""
       for issue in result.issues
         issue_summary = "[#{issue.key}] #{issue.fields.summary} : #{issue.fields.status.name}\n"
