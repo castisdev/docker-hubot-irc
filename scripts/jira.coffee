@@ -280,13 +280,15 @@ module.exports = (robot) ->
       filter = filters.get msg.match[3]
       msg.reply "#{filter.name}: #{filter.jql}"
 
-  robot.hear /업무보고/, (msg) ->
+  robot.hear /업무\s*보고/, (msg) ->
     jql = "updated >= -1d AND assignee in (#{msg.message.user.name})"
     get msg, "search/?jql=#{escape(jql)}", (result) ->
       if result.errors?
         return
-      text = ''
+      if result.total == 0
+        return
+      text = '#{msg.message.user.name}님이 오늘 진행하신 이슈입니다.'
       for issue in result.issues
         issue_summary = "[#{issue.key}] #{issue.fields.summary} : #{issue.fields.status.name}\n"
         text = text + issue_summary
-      msg.reply text
+      msg.send text
