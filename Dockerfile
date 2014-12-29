@@ -8,7 +8,7 @@ RUN cd /root && \
   hubot --create myhubot && \
   cd myhubot && \
   npm install hubot-irc --save && \
-  npm install nodepie underscore xml2js cron emailjs --save && \
+  npm install nodepie underscore xml2js cron emailjs sugar --save && \
   npm install
 
 
