@@ -30,6 +30,14 @@ module.exports = (robot) ->
     date = new Date()
     return "#{date.getFullYear()}-#{date.getMonth() + 1}-#{date.getDate()}"
 
+  status_kor = (status) ->
+    if status == "In Progress"
+      "진행 중"
+    else if status == "Open" || status == "Todo"
+      "예정"
+    else if status == "Resolved" || status == "Closed"
+      "완료"
+
   send_worklog_email = (from, title, body) ->
     email = require("emailjs/email")
     server = email.server.connect({
@@ -57,8 +65,8 @@ module.exports = (robot) ->
       msg.send summary
       text = ""
       for issue in result.issues
-        issue_summary = "[#{issue.key}] #{issue.fields.summary} : #{issue.fields.status.name}\n"
-        text = text + issue_summary
+        issue_summary = "(#{issue.key}) #{issue.fields.summary} - "
+        text = text + issue_summary + status_kor "#{issue.fields.status.name}"
       msg.send text
       msg.send "업무 보고 이메일을 발송합니다."
       send_worklog_email  "#{result.issues[0].fields.assignee.emailAddress}", "일일업무보고 #{today()}", text
