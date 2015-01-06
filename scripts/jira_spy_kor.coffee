@@ -19,7 +19,7 @@ module.exports = (robot) ->
     body = req.body
     if body.webhookEvent == 'jira:issue_updated' && body.comment
       robot.messageRoom room, "<#{body.comment.author.name}>님께서 [#{body.issue.key} #{body.issue.fields.summary}]에 댓글을 달았습니다."
-      robot.messageRoom room, "(#{body.comment.self})"
+      robot.messageRoom room, "(#{process.env.HUBOT_JIRA_URL}/browse/#{body.issue.key})"
       robot.messageRoom room, "> #{body.comment.body}"
 
     res.send 'OK'
