@@ -22,7 +22,7 @@ module.exports = (robot) ->
       url = "#{process.env.HUBOT_JIRA_URL}/browse/#{body.issue.key}"
       comment = body.comment.body
       formatted_comment = "> " + comment.replace /(\n)+/g, "\n> " 
-      robot.messageRoom room, "@#{body.comment.author.name}님께서 #{issue} 에 댓글을 달았습니다. (#{url})"
+      robot.messageRoom room, "@#{body.comment.author.name}님께서 *#{issue}* 에 댓글을 달았습니다. _(#{url})_"
       robot.messageRoom room, formatted_comment
 
     res.send 'OK'
