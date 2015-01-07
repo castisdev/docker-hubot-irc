@@ -24,7 +24,7 @@ module.exports = (robot) ->
       formatted_comment = "> " + comment.replace /\n/g, "\n> " 
       robot.messageRoom room, "@#{body.comment.author.name}님께서 #{issue} 에 댓글을 달았습니다."
       robot.messageRoom room, "url: #{url}"
-      robot.messageRoom room, "> #{formatted_comment}"
+      robot.messageRoom room, formatted_comment
 
     res.send 'OK'
 
