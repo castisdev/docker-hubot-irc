@@ -57,8 +57,7 @@ module.exports = (robot) ->
       msg.send summary
       text = ""
       for issue in result.issues
-        if issue.fields.status.name == "In Progress"
-          text = text + "(#{issue.key}) #{issue.fields.summary}\n"
+        text = text + "(#{issue.key}) #{issue.fields.summary}\n"
       msg.send text
       msg.send "업무 보고 이메일을 발송합니다."
       send_worklog_email  "#{result.issues[0].fields.assignee.emailAddress}", "일일업무보고 #{today()}", text
