@@ -14,7 +14,7 @@
 #   mnpk <mnncat@gmail.com>
 
 module.exports = (robot) ->
-  robot.router.post '/hubot/jira-spy/:room', (req, res) ->
+  robot.router.post '/hubot/chat-jira-comment/:room', (req, res) ->
     room = "##{req.params.room}"
     body = req.body
     if body.webhookEvent == 'jira:issue_updated' && body.comment
@@ -23,6 +23,10 @@ module.exports = (robot) ->
       robot.messageRoom room, "*#{issue}* _(#{url})_"
       robot.messageRoom room, "@#{body.comment.author.name}님의 댓글:"
       robot.messageRoom room, "```#{body.comment.body}```"
-
     res.send 'OK'
 
+  robot.router.post '/hubot/chat-to/:room', (req, res) ->
+    room = "##{req.params.room}"
+    body = req.body
+    robot.messageRoom room, "```#{body}```"
+    res.send 'OK'
