@@ -20,8 +20,8 @@ ENV HUBOT_IRC_ROOMS #general,#random,#sandbox,#d7
 ENV HUBOT_IRC_SERVER castisdev.irc.slack.com
 ENV HUBOT_IRC_UNFLOOD 500
 ENV HUBOT_IRC_USESSL 1
-ENV HUBOT_JENKINS_URL http://d7.mnpk.org/jenkins
-ENV HUBOT_JIRA_URL http://d7.mnpk.org/jira
+ENV HUBOT_JENKINS_URL http://110.35.173.15/jenkins
+ENV HUBOT_JIRA_URL http://110.35.173.15/jira
 ENV REDISTOGO_URL redis://172.17.42.1:6379/hubot
 
 # HTTP Listener port 9009
